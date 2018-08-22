@@ -1,11 +1,13 @@
 package main;
 
 import json.JsonManager;
+import logic.Automata;
+import logic.DFA;
 
 public class Main {
     public static void main (String[] args)
     {
-        JsonManager jsonManager = new JsonManager();
-        jsonManager.debeDevolverLaRepresentacionJSONDeUnObjetoDeFormaBonita();
+        DFA dfa = new DFA();
+        dfa.printLetters("aabcaa");
     }
 }
