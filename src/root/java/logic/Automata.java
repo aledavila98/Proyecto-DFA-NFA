@@ -51,4 +51,14 @@ public abstract class Automata {
         for (int c = 0; c<array.length; c++)
             System.out.print(array[c]);
     }
+
+    public void printNodos()
+    {
+        for (Nodo n : nodos)
+        {
+            System.out.print(n.valor+" - ");
+            for (Aristas a : n.aristas)
+                System.out.println(a.valor+" - "+a.to+"- "+a.from);
+        }
+    }
 }

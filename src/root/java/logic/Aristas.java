@@ -4,11 +4,12 @@ public class Aristas {
     public String to;
     public String from;
     public int pos;
+    public char valor;
 
-    public Aristas(String t, String f, int p)
+    public Aristas(String t, String f, char v)
     {
         to = t;
         from = f;
-        pos = p;
+        valor = v;
     }
 }

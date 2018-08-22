@@ -7,23 +7,26 @@ public class Nodo {
     public String valor;
     public ArrayList<Aristas> aristas;
     public int cantAristas;
+    public boolean estadoFinal;
+    public boolean estadoNegacion;
 
     public Nodo()
     {
         valor = null;
-        aristas = null;
+
     }
 
     public Nodo(String v)
     {
         valor = v;
+        aristas = new ArrayList<Aristas>();
         cantAristas = 0;
     }
 
-    public void addArista(String v, String to)
+    public void addArista(String to, String v, char c)
     {
         cantAristas +=1;
-        aristas.add(new Aristas(to,v,cantAristas));
+        aristas.add(new Aristas(to,v,c));
     }
 
 }
