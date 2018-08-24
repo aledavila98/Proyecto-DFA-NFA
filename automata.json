@@ -1,0 +1,16 @@
+[
+  {
+    "valor": "q0",
+    "aristas": [
+      {
+        "to": "q0",
+        "from": "q0",
+        "pos": 0,
+        "valor": "a"
+      }
+    ],
+    "cantAristas": 1,
+    "estadoFinal": true,
+    "estadoNegacion": false
+  }
+]

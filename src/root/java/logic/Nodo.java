@@ -23,10 +23,10 @@ public class Nodo {
         cantAristas = 0;
     }
 
-    public void addArista(String to, String v, char c)
+    public void addArista(String to, String f, char c)
     {
         cantAristas +=1;
-        aristas.add(new Aristas(to,v,c));
+        aristas.add(new Aristas(to,f,c));
     }
 
 }

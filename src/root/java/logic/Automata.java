@@ -1,11 +1,13 @@
 package logic;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public abstract class Automata {
     public ArrayList<Nodo> nodos;
 
-    public abstract void generateAutomataInJson(ArrayList<Nodo> estados);
+    public abstract String generateAutomataInJson();
 
     public abstract void loadAutomataFromJson();
 
@@ -56,9 +58,16 @@ public abstract class Automata {
     {
         for (Nodo n : nodos)
         {
-            System.out.print(n.valor+" - ");
+            if (n.valor.equals("q0")){
+                if (n.estadoFinal)
+                    System.out.print("* -> "+n.valor+" ");
+                else
+                    System.out.print("-> "+n.valor);
+            }
+            else
+                System.out.print(n.valor+" - ");
             for (Aristas a : n.aristas)
-                System.out.println(a.valor+" - "+a.to+"- "+a.from);
+                System.out.println(a.valor+" - "+a.from+"- "+a.to);
         }
     }
 }

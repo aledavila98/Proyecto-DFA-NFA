@@ -1,11 +1,13 @@
 package logic;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class NFA extends Automata {
 
-    public void generateAutomataInJson(ArrayList<Nodo> estados) {
-
+    public String generateAutomataInJson() {
+        return null;
     }
 
     public void loadAutomataFromJson() {
