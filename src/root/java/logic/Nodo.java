@@ -8,7 +8,6 @@ public class Nodo {
     public ArrayList<Aristas> aristas;
     public int cantAristas;
     public boolean estadoFinal;
-    public boolean estadoNegacion;
 
     public Nodo()
     {

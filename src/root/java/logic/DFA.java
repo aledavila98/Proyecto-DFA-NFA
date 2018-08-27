@@ -31,24 +31,47 @@ public class DFA extends Automata {
     public boolean buildAutomata(String s) {
         char[] lenguaje = this.findLetters(s);
         boolean finalizar = false;
-        while (!finalizar)
+        //Aqui se inicializa el automata
+        if (ultimoEstado == 0)
         {
-            if (ultimoEstado == 0)
+            Nodo nodInicial = new Nodo("q0");
+            ultimoEstado++;
+            //esta condicion se ejecuta cuando la cadena solo contiene un caracter
+            if (s.length()==1 || (s.length()==2 && s.charAt(1) == '*'))
             {
-                Nodo nodInicial = new Nodo("q0");
-                if (s.length()==1 || (s.length()==2 && s.charAt(1) == '*'))
-                {
-                    nodInicial.addArista("q0","q0", s.charAt(0));
-                    nodInicial.estadoFinal = true;
-                    nodos.add(nodInicial);
-                    return true;
-                }
-                else{
+                nodInicial.addArista("q0","q0", s.charAt(0));
+                nodInicial.estadoFinal = true;
+                nodos.add(nodInicial);
+                return true;
+            }
 
+            else{
+                boolean[] repitentes = findCycle(s);
+                boolean hayRepitente = false;
+                for (int c=0; c<repitentes.length; c++)
+                {
+                    if (repitentes[c])
+                    {
+                        hayRepitente = true;
+                        break;
+                    }
+                }
+                if (!hayRepitente) {
+                    nodos.add(nodInicial);
+                    for (int c = 0; c < lenguaje.length; c++)
+                    {
+                        Nodo nodTmp = new Nodo("q"+ultimoEstado);
+                        nodInicial.addArista("q"+ultimoEstado,"q0",lenguaje[c]);
+                        nodos.add(nodTmp);
+                        ultimoEstado++;
+                    }
                 }
             }
-            finalizar = true;
         }
+        else {
+
+        }
+        finalizar = true;
         return false;
     }
 
@@ -66,7 +89,7 @@ public class DFA extends Automata {
     public static void main(String[] args)
     {
         DFA dfa = new DFA();
-        dfa.buildAutomata("a*");
+        dfa.buildAutomata("aab");
         JsonManager jsonManager = new JsonManager();
         jsonManager.createJson(dfa.generateAutomataInJson());
     }

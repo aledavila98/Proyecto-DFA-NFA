@@ -2,6 +2,7 @@ package json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import logic.Automata;
 import logic.Nodo;
 
 import java.io.*;
@@ -38,8 +39,16 @@ public class JsonManager implements Serializable {
         }
     }
 
-    public void loadJson()
+    public ArrayList<Nodo> loadJson()
     {
-
+        try{
+            Gson gson = new Gson();
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            ArrayList<Nodo> nodoList  = gson.fromJson(br,ArrayList.class);
+            return nodoList;
+        } catch (FileNotFoundException ex)  {
+            ex.printStackTrace();
+        }
+        return null;
     }
 }
