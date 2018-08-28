@@ -10,13 +10,19 @@ import java.util.ArrayList;
 
 public class JsonManager implements Serializable {
 
-    public String filename = "automata.json";
-    public String dirIndex = "index.aut";
+    public int index;
+    public String filename;
+    public String dirIndex = "./json_files/index.idx";
     public File file;
+    public RandomAccessFile ram;
 
     public JsonManager()
     {
         try{
+            ram = new RandomAccessFile(dirIndex, "rw");
+            ram.seek(0);
+            index = ram.readInt();
+            filename =  "./json_files/automata_"+index+".json";
             file = new File(filename);
             file.createNewFile();
         } catch (IOException ex) {
@@ -24,10 +30,35 @@ public class JsonManager implements Serializable {
         }
     }
 
+    public void writeIndexFile()
+    {
+        try {
+            if (ram.length()==0){
+                ram.seek(0);
+                ram.writeInt(0);
+                ram.close();
+            }
+            else{
+                ram.seek(0);
+                index = ram.readInt();
+                System.out.println("ReadInt: "+index);
+                index++;
+                ram.seek(0);
+                ram.writeInt(index);
+                ram.seek(0);
+                System.out.println("Nuevo valor: "+ram.readInt());
+                ram.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void createJson(String s)
     {
         try
         {
+            writeIndexFile();
             FileWriter writer = new FileWriter(file);
             writer.write(s);
             writer.close();

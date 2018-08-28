@@ -10,84 +10,57 @@ import java.util.ArrayList;
 public class DFA extends Automata {
 
     public int ultimoEstado;
+    private JsonManager jsonManager;
 
     public DFA()
     {
         nodos = new ArrayList<Nodo>();
+        jsonManager = new JsonManager();
         ultimoEstado = 0;
     }
 
     public String generateAutomataInJson() {
         Gson gsonObject = new GsonBuilder().setPrettyPrinting().create();
         String representacion = gsonObject.toJson(nodos);
+        jsonManager.createJson(representacion);
         System.out.println(representacion);
         return representacion;
     }
 
     public void loadAutomataFromJson() {
-        JsonManager jsonManager = new JsonManager();
         nodos = jsonManager.loadJson();
     }
 
     public boolean buildAutomata(String s) {
-        char[] lenguaje = this.findLetters(s);
-        boolean finalizar = false;
         //Aqui se inicializa el automata
-        while (!finalizar) {
+        while (true) {
             if (ultimoEstado == 0) {
                 Nodo nodInicial = new Nodo("q0");
                 ultimoEstado++;
+                nodos.add(nodInicial);
                 //esta condicion se ejecuta cuando la cadena solo contiene un caracter
                 if (s.length() == 1 || (s.length() == 2 && s.charAt(1) == '*')) {
                     nodInicial.addArista("q0", "q0", s.charAt(0));
                     nodInicial.estadoFinal = true;
-                    nodos.add(nodInicial);
+                    //nodos.add(nodInicial);
                     return true;
-                } else {
-                    boolean[] repitentes = findCycle(s);
-                    boolean hayRepitente = false;
-                    for (int c = 0; c < repitentes.length; c++) {
-                        if (repitentes[c]) {
-                            hayRepitente = true;
-                            break;
-                        }
-                    }
-                    if (!hayRepitente) {
-                        nodos.add(nodInicial);
-                        for (int c = 0; c < lenguaje.length; c++) {
-                            Nodo nodTmp = new Nodo("q" + ultimoEstado);
-                            nodInicial.addArista("q" + ultimoEstado, "q0", lenguaje[c]);
-                            nodos.add(nodTmp);
-                            ultimoEstado++;
-                        }
-                    }
                 }
             } else {
-                String cadenaPorEvaluar = "";
-                int cont = 0;
-                boolean modifyNext = false;
-                for (Nodo n : nodos) {
-                    if (modifyNext)
+                for (int c=0; c<s.length() ; c++) {
+                    Nodo actual = nodos.get(c);
+                    String nuevoEstado = "q" + ultimoEstado;
+                    Nodo nodtmp = new Nodo(nuevoEstado);
+                    actual.addArista(nuevoEstado, actual.valor, s.charAt(c));
+                    nodos.add(nodtmp);
+                    if (c == s.length() - 1)
                     {
-                        ultimoEstado++;
-                        String ult = "q"+ultimoEstado;
-                        n.addArista(ult,n.valor,s.charAt(cont));
-                        Nodo nodtmp = new Nodo(ult);
-                        nodos.add(nodtmp);
+                        nodtmp.estadoFinal = true;
+                        return true;
                     }
-                    for (Aristas a : n.aristas) {
-                        if (a.valor == s.charAt(cont)) {
-                            modifyNext = true;
-                            break;
-                        }
-                    }
-                    cont++;
+                    ultimoEstado++;
                 }
-
             }
         }
-        finalizar = true;
-        return false;
     }
 
     private boolean[] findCycle(String c)
@@ -104,7 +77,7 @@ public class DFA extends Automata {
     public static void main(String[] args)
     {
         DFA dfa = new DFA();
-        dfa.loadAutomataFromJson();
+        dfa.buildAutomata("aabca");
         dfa.generateAutomataInJson();
         //dfa.printNodos();
     }
