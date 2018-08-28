@@ -25,51 +25,66 @@ public class DFA extends Automata {
     }
 
     public void loadAutomataFromJson() {
-
+        JsonManager jsonManager = new JsonManager();
+        nodos = jsonManager.loadJson();
     }
 
     public boolean buildAutomata(String s) {
         char[] lenguaje = this.findLetters(s);
         boolean finalizar = false;
         //Aqui se inicializa el automata
-        if (ultimoEstado == 0)
-        {
-            Nodo nodInicial = new Nodo("q0");
-            ultimoEstado++;
-            //esta condicion se ejecuta cuando la cadena solo contiene un caracter
-            if (s.length()==1 || (s.length()==2 && s.charAt(1) == '*'))
-            {
-                nodInicial.addArista("q0","q0", s.charAt(0));
-                nodInicial.estadoFinal = true;
-                nodos.add(nodInicial);
-                return true;
-            }
-
-            else{
-                boolean[] repitentes = findCycle(s);
-                boolean hayRepitente = false;
-                for (int c=0; c<repitentes.length; c++)
-                {
-                    if (repitentes[c])
-                    {
-                        hayRepitente = true;
-                        break;
-                    }
-                }
-                if (!hayRepitente) {
+        while (!finalizar) {
+            if (ultimoEstado == 0) {
+                Nodo nodInicial = new Nodo("q0");
+                ultimoEstado++;
+                //esta condicion se ejecuta cuando la cadena solo contiene un caracter
+                if (s.length() == 1 || (s.length() == 2 && s.charAt(1) == '*')) {
+                    nodInicial.addArista("q0", "q0", s.charAt(0));
+                    nodInicial.estadoFinal = true;
                     nodos.add(nodInicial);
-                    for (int c = 0; c < lenguaje.length; c++)
-                    {
-                        Nodo nodTmp = new Nodo("q"+ultimoEstado);
-                        nodInicial.addArista("q"+ultimoEstado,"q0",lenguaje[c]);
-                        nodos.add(nodTmp);
-                        ultimoEstado++;
+                    return true;
+                } else {
+                    boolean[] repitentes = findCycle(s);
+                    boolean hayRepitente = false;
+                    for (int c = 0; c < repitentes.length; c++) {
+                        if (repitentes[c]) {
+                            hayRepitente = true;
+                            break;
+                        }
+                    }
+                    if (!hayRepitente) {
+                        nodos.add(nodInicial);
+                        for (int c = 0; c < lenguaje.length; c++) {
+                            Nodo nodTmp = new Nodo("q" + ultimoEstado);
+                            nodInicial.addArista("q" + ultimoEstado, "q0", lenguaje[c]);
+                            nodos.add(nodTmp);
+                            ultimoEstado++;
+                        }
                     }
                 }
-            }
-        }
-        else {
+            } else {
+                String cadenaPorEvaluar = "";
+                int cont = 0;
+                boolean modifyNext = false;
+                for (Nodo n : nodos) {
+                    if (modifyNext)
+                    {
+                        ultimoEstado++;
+                        String ult = "q"+ultimoEstado;
+                        n.addArista(ult,n.valor,s.charAt(cont));
+                        Nodo nodtmp = new Nodo(ult);
+                        nodos.add(nodtmp);
+                    }
+                    for (Aristas a : n.aristas) {
+                        if (a.valor == s.charAt(cont)) {
+                            modifyNext = true;
+                            break;
+                        }
+                    }
+                    cont++;
+                }
 
+            }
         }
         finalizar = true;
         return false;
@@ -89,9 +104,9 @@ public class DFA extends Automata {
     public static void main(String[] args)
     {
         DFA dfa = new DFA();
-        dfa.buildAutomata("aab");
-        JsonManager jsonManager = new JsonManager();
-        jsonManager.createJson(dfa.generateAutomataInJson());
+        dfa.loadAutomataFromJson();
+        dfa.generateAutomataInJson();
+        //dfa.printNodos();
     }
 
 }

@@ -3,34 +3,12 @@
     "valor": "q0",
     "aristas": [
       {
-        "to": "q1",
+        "to": "q0",
         "from": "q0",
-        "pos": 0,
         "valor": "a"
-      },
-      {
-        "to": "q2",
-        "from": "q0",
-        "pos": 0,
-        "valor": "b"
       }
     ],
-    "cantAristas": 2,
-    "estadoFinal": false,
-    "estadoNegacion": false
-  },
-  {
-    "valor": "q1",
-    "aristas": [],
-    "cantAristas": 0,
-    "estadoFinal": false,
-    "estadoNegacion": false
-  },
-  {
-    "valor": "q2",
-    "aristas": [],
-    "cantAristas": 0,
-    "estadoFinal": false,
-    "estadoNegacion": false
+    "cantAristas": 1,
+    "estadoFinal": true
   }
 ]
