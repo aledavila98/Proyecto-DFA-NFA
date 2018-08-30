@@ -1,20 +1,22 @@
 package logic;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import json.JsonManager;
 
 import java.util.ArrayList;
 
 public abstract class Automata {
     public ArrayList<Nodo> nodos;
 
+    public abstract boolean buildAutomata(String c);
+
     public abstract String generateAutomataInJson();
 
     public abstract void loadAutomataFromJson();
 
-    public abstract boolean buildAutomata(String c);
 
-
-    public char[] findLetters(String s)
+    public char[] findAlphabet(String s)
     {
         int length = s.length();
         boolean repeat[] = new boolean[length];
@@ -48,7 +50,7 @@ public abstract class Automata {
 
     public void printLetters(String s)
     {
-        char[] array = findLetters(s);
+        char[] array = findAlphabet(s);
         System.out.println(array.length);
         for (int c = 0; c<array.length; c++)
             System.out.print(array[c]);

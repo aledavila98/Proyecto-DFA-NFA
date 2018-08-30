@@ -54,6 +54,18 @@ public class JsonManager implements Serializable {
         }
     }
 
+    public void resetIndex()
+    {
+        try{
+            ram.seek(0);
+            ram.writeInt(0);
+            ram.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public void createJson(String s)
     {
         try
