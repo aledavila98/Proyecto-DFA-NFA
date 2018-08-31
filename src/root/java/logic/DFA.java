@@ -75,7 +75,7 @@ public class DFA extends Automata {
         }
     }
 
-    public boolean buildTabla(String[] estFin) {
+    public void buildTabla(String[] estFin) {
         int length = alfabeto.length();
         estados = new String[cantEstados+1][length+1];
         estados[0][0] = "q";
@@ -103,7 +103,29 @@ public class DFA extends Automata {
             }
             estados[c+1][0] = nodActual;
         }
-        return false;
+    }
+
+    public void asignarAristas(String[][] aristas)
+    {
+        Nodo estadoActual;
+        for (int f=1; f<=cantEstados; f++)
+        {
+            estadoActual = getEstadoActual(f);
+            for (int c=1; c<= alfabeto.length(); c++)
+                estadoActual.addArista(aristas[f][c],estadoActual.valor,estados[0][c].charAt(0));
+        }
+    }
+
+    //public void fillTabla()
+
+    private Nodo getEstadoActual(int fila)
+    {
+        for (Nodo n: nodos)
+        {
+            if (n.valor.equals(estados[fila][0]))
+                return n;
+        }
+        return null;
     }
 
     public void printTabla()
