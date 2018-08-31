@@ -116,6 +116,32 @@ public class DFA extends Automata {
         }
     }
 
+    public boolean evaluarDFA(String s)
+    {
+        Nodo nodtmp = nodos.get(0);
+        String cadenaComparar = "";
+        String nuevo = "";
+        for (int c=0; c<s.length(); c++)
+        {
+            for (Aristas a : nodtmp.aristas)
+            {
+                if (a.valor == s.charAt(c)){
+                    nuevo = a.to;
+                    cadenaComparar += s.charAt(c);
+                    if (cadenaComparar.equals(s) && nodtmp.estadoFinal)
+                        return true;
+                    break;
+                }
+            }
+            for (Nodo n : nodos)
+            {
+                if (n.valor.equals(nuevo))
+                    nodtmp = n;
+            }
+        }
+        return false;
+    }
+
     //public void fillTabla()
 
     private Nodo getEstadoActual(int fila)

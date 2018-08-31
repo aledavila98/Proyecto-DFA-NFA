@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Teoria de la Compu" target="1.5" />
+      <module name="Teoria de la Compu" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>
